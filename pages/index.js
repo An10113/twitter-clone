@@ -1,3 +1,4 @@
+import Postsfeed from "@/components/Postsfeed";
 import Sidebar from "@/components/Sidebar";
 
 export default function Home() {
@@ -9,8 +10,8 @@ export default function Home() {
     mx-auto
     text-[#E7E9EA]">
       <Sidebar />
-      {/* <PostsFeed />
-      <Trending /> */}
+      <Postsfeed />
+      {/* <Trending /> */}
     </div>
     )
 }
