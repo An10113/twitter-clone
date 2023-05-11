@@ -6,7 +6,7 @@ import {
 
 export default function Sidebar() {
   return (
-    <div className='xl:ml-24 h-full hidden sm:flex flex-col fixed'>
+    <div className='xl:ml-16 h-full hidden sm:flex flex-col fixed'>
         <nav className='h-full xl:space-y-1.5 relative'>
         <div className='py-3 xl:p-3 flex justify-center items-center xl:justify-start'>
             <img src={"/assets/twitter-logo.png"} width={34} height={34}  />
