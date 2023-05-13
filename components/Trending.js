@@ -60,7 +60,7 @@ function TopFollow({img, name, name2 }){
           <h1 className="text-[12px]">{name2}</h1>
       </div>
     </div>
-    <button className="h-8 w-20 bg-white text-black font-bold text-sm rounded-3xl">Follow</button>
+    <button className="h-8 w-20 bg-white text-black font-bold text-sm rounded-3xl hover:bg-opacity-80">Follow</button>
   </div>
   )
 }

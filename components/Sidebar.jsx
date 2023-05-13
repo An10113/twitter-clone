@@ -19,7 +19,7 @@ export default function Sidebar() {
             <SidebarLink Icon={UserIcon} text={"Profile"}/>
             <SidebarLink Icon={DotsCircleHorizontalIcon} text={"More"}/>
             <button className='hidden xl:inline bg-[#1d9bf0]
-            rounded-full mt-2 h-[50px] text-lg font-bold w-[200px]'>
+            rounded-full hover:bg-opacity-80 mt-2 h-[50px] text-lg font-bold w-[200px]'>
                 Tweet
             </button>
         <div className='absolute bottom-0'>
