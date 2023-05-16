@@ -1,13 +1,41 @@
 import { closeSignupModal, openSignupModal } from "@/Redux/ModalSlice"
 import { Modal } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
+import { useEffect, useState } from "react"
+import { auth } from "@/firebase"
+import { setUser } from "@/Redux/userSlice"
 
 export default function SignUpmodal() {
 
     const isOpen = useSelector(state => state.modal.signupModal)
     const dispatch = useDispatch()
-    console.log(isOpen)
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+   async function handleSignUp(){
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+    }
+
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
+        if (!currentUser) return;
+        dispatch(setUser({
+          username: currentUser.email.split("@")[0],
+          name: null,
+          email: currentUser.email,
+          uid: currentUser.uid,
+          photoUrl: null
+        }))
+        console.log(currentUser)
+    })
+      return unsubscribe
+    },[])
 
   return (
     <>
@@ -35,10 +63,21 @@ export default function SignUpmodal() {
         </button>
         <h1 className="text-center mt-4 font-bold text-lg">or</h1>
         <h1 className="text-center mt-4 font-bold text-4xl">Create your account</h1>
-        <input className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" placeholder="fullname" type={"text"} />
-        <input className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" placeholder="email" type={"email"} />
-        <input className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" placeholder="password" type={"password"} />
-        <button className="bg-white text-black mt-8 rounded-md
+        <input 
+        // onChange={} 
+        className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" 
+        placeholder="fullname" type={"text"} />
+        <input
+        onChange={e => setEmail(e.target.value)} 
+        className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" 
+        placeholder="email" type={"email"} required/>
+        <input
+        onChange={e => setPassword(e.target.value)} 
+        className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" 
+        placeholder="password" type={"password"} required/>
+        <button
+        onClick={handleSignUp}
+        className="bg-white text-black mt-8 rounded-md
         w-full font-bold text-lg p-2">
           Create account
         </button>

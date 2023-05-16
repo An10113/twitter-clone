@@ -2,8 +2,11 @@ import Banner from "@/components/Banner";
 import Postsfeed from "@/components/Postsfeed";
 import Sidebar from "@/components/Sidebar";
 import Trending from "@/components/Trending";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const username = useSelector(state => state.user.username)
+  console.log(username)
   return (
     <div className=" bg-black">
       <div className="
@@ -13,10 +16,10 @@ export default function Home() {
       text-[#E7E9EA]
       flex">
         <Sidebar />
-        <Postsfeed />
-        <Trending />
+        {/* <Postsfeed />
+        <Trending /> */}
       </div>
-      <Banner />
+      { !username && <Banner /> }
     </div>
     )
 }
