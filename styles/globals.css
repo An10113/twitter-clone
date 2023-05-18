@@ -3,9 +3,12 @@
 @tailwind utilities;
 
 
+body{
+    background-color: black;
+}
 
 .hoverAnimation{
-    @apply hover:bg-white hover:bg-opacity-10 xl:p-3 rounded-full
+    @apply hover:bg-white hover:bg-opacity-10 xl:p-3 rounded-full items-center
     w-11 h-11 xl:w-auto xl:h-auto
 }
 

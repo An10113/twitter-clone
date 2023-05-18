@@ -8,7 +8,7 @@ export default function Home() {
   const username = useSelector(state => state.user.username)
   console.log(username)
   return (
-    <div className=" bg-black">
+    <>
       <div className="
       min-h-screen
       max-w-[1400px]
@@ -16,10 +16,10 @@ export default function Home() {
       text-[#E7E9EA]
       flex">
         <Sidebar />
-        {/* <Postsfeed />
-        <Trending /> */}
+        <Postsfeed />
+        <Trending />
       </div>
       { !username && <Banner /> }
-    </div>
+    </>
     )
 }
