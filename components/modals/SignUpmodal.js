@@ -12,6 +12,7 @@ export default function SignUpmodal() {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
     const [password, setPassword] = useState("")
 
    async function handleSignUp(){
@@ -19,7 +20,11 @@ export default function SignUpmodal() {
         auth,
         email,
         password
-      )
+      );
+      await updateProfile(auth.currentUser,{
+        displayName:name,
+        photoUrl:"/assets/pfp/pfp1.png"
+      })
     }
 
     useEffect(() => {
@@ -64,7 +69,7 @@ export default function SignUpmodal() {
         <h1 className="text-center mt-4 font-bold text-lg">or</h1>
         <h1 className="text-center mt-4 font-bold text-4xl">Create your account</h1>
         <input 
-        // onChange={} 
+        onChange={e => setName(e.target.value)} 
         className="h-10 rounded-md bg-transparent border border-gray-700 p-6 mt-8" 
         placeholder="fullname" type={"text"} />
         <input

@@ -4,14 +4,19 @@ import {
     ClipboardListIcon, BellIcon, DotsCircleHorizontalIcon, DotsHorizontalIcon
 } from "@heroicons/react/outline"
 import { Icon } from '@mui/material'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase'
 import { signoutUser } from '@/Redux/userSlice'
 
+
 export default function Sidebar() {
     
     const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
+    console.log(user)
+
+
     async function handleSignOut(){
         await signOut(auth)
         dispatch(signoutUser())
@@ -38,12 +43,12 @@ export default function Sidebar() {
         rounded-full cursor-pointer
         hover:bg-white hover:bg-opacity-10
         flex justify-center items-center'>
-            <img src='/assets/plain.jpg' className='w-10 h-10 rounded-full object-cover'/>
+            <img src={user.photoUrl ||'/assets/plain.jpg'} className='w-10 h-10 rounded-full object-cover'/>
             <div className='hidden xl:inline '>
                 <h1 className='font-bold whitespace-nowrap'>
-                    name
+                    {user.username}
                 </h1>
-                <h1 className='text-gray-500'>@username</h1>
+                <h1 className='text-gray-500'>{`@${user.username}`}</h1>
             </div>
             <DotsHorizontalIcon 
             onClick={handleSignOut}
