@@ -1,6 +1,8 @@
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
 
+
 export default function Tweet() {
+    const [text, setText] = useState("")
   return (
     <div className="border-b border-gray-700">
         <Tweetheader />

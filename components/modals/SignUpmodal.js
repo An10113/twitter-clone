@@ -1,19 +1,30 @@
 import { closeSignupModal, openSignupModal } from "@/Redux/ModalSlice"
 import { Modal } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { auth } from "@/firebase"
 import { setUser } from "@/Redux/userSlice"
+import { useRouter } from "next/router"
 
 export default function SignUpmodal() {
 
     const isOpen = useSelector(state => state.modal.signupModal)
     const dispatch = useDispatch()
 
+
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
+    const router = useRouter()
+
+    async function handleGuestSignIn(){
+      await signInWithEmailAndPassword(
+        auth,
+        'guest0000@gmail.com',
+        'Guest1000'
+      )
+  }
 
    async function handleSignUp(){
       const userCredentials = await createUserWithEmailAndPassword(
@@ -21,10 +32,13 @@ export default function SignUpmodal() {
         email,
         password
       );
+
       await updateProfile(auth.currentUser,{
         displayName:name,
-        photoUrl:"/assets/pfp/pfp1.png"
+        photoURL:`/assets/pfp/pfp${Math.ceil(Math.random() * 6)}.png`
       })
+      router.reload()
+
     }
 
     useEffect(() => {
@@ -32,10 +46,10 @@ export default function SignUpmodal() {
         if (!currentUser) return;
         dispatch(setUser({
           username: currentUser.email.split("@")[0],
-          name: null,
+          name: currentUser.displayName,
           email: currentUser.email,
           uid: currentUser.uid,
-          photoUrl: null
+          photoUrl: currentUser.photoURL,
         }))
         console.log(currentUser)
     })
@@ -62,7 +76,9 @@ export default function SignUpmodal() {
     flex justify-center
     ">
       <div className="w-[90%] mt-8 flex flex-col">
-      <button className="bg-white text-black rounded-md
+      <button
+        onClick={handleGuestSignIn}
+        className="bg-white text-black rounded-md
         w-full font-bold text-lg p-2">
           Sign in as Guest
         </button>

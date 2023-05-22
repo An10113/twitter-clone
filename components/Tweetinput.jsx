@@ -1,12 +1,20 @@
 import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon } from "@heroicons/react/outline"
+import { useState } from "react"
 export default function Tweetinput() {
+  const [text, setText] = useState("")
+
+  async function sendTweet(){
+    
+  }
+
   return (
     <div className="flex space-x-3 p-3 border-b border-gray-700">
         <img 
         className="w-11 h-11 rounded-full object-cover"
         src="/assets/kylie.png"/>
         <div className="w-full">
-            <textarea 
+            <textarea
+            onChange={e => setText(e.target.value)} 
             placeholder="What's on your mind? "
             className="bg-transparent resize-none
             outline-none min-h-[50px] text-lg"/>

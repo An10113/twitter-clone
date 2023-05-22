@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase'
 import { signoutUser } from '@/Redux/userSlice'
+import { closeLoginModal, closeSignupModal } from '@/Redux/ModalSlice'
 
 
 export default function Sidebar() {
@@ -20,6 +21,8 @@ export default function Sidebar() {
     async function handleSignOut(){
         await signOut(auth)
         dispatch(signoutUser())
+        dispatch(closeSignupModal())
+        dispatch(closeLoginModal())
     }
   return (
     <div className='ml-2 xl:ml-16 h-full hidden sm:flex flex-col fixed'>
@@ -39,6 +42,7 @@ export default function Sidebar() {
                 Tweet
             </button>
         <div 
+        onClick={handleSignOut}
         className='absolute bottom-3 xl:p-3 space-x-3
         rounded-full cursor-pointer
         hover:bg-white hover:bg-opacity-10
@@ -46,12 +50,11 @@ export default function Sidebar() {
             <img src={user.photoUrl ||'/assets/plain.jpg'} className='w-10 h-10 rounded-full object-cover'/>
             <div className='hidden xl:inline '>
                 <h1 className='font-bold whitespace-nowrap'>
-                    {user.username}
+                    {user.name}
                 </h1>
                 <h1 className='text-gray-500'>{`@${user.username}`}</h1>
             </div>
             <DotsHorizontalIcon 
-            onClick={handleSignOut}
             className='h-5 font-bold hidden xl:inline' />
         </div>
         </nav>
