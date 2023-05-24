@@ -1,7 +1,22 @@
+import { useEffect, useState } from "react";
 import Tweet from "./Tweet";
 import Tweetinput from "./Tweetinput";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "@/firebase";
 
 export default function Postsfeed() {
+
+    const [tweet, setTweet] = useState([])
+    useEffect(() => {
+      const q = query(collection(db, "posts"), orderBy("timestamp", "desc"))
+      const unsubcribe = onSnapshot(q,(snapshot) => {
+        setTweet(snapshot.docs)
+      })      
+    })
+    useEffect(() => {
+      console.log(tweet)
+    },[])
+
   return (
     <div className="sm:ml-16 xl:ml-96 max-w-2xl flex-grow 
     border-gray-700 border-x
@@ -12,7 +27,8 @@ export default function Postsfeed() {
             Home
         </div>
       <Tweetinput />
-      <Tweet />
+      {tweet.map(tweet => <Tweet key={tweet.id} data={tweet.data()} />)}
+
     </div>
   )
 }
