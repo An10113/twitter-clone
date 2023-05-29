@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
   const username = useSelector(state => state.user.username)
-  console.log(username)
   return (
     <>
       <div className="

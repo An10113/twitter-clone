@@ -51,7 +51,6 @@ export default function SignUpmodal() {
           uid: currentUser.uid,
           photoUrl: currentUser.photoURL,
         }))
-        console.log(currentUser)
     })
       return unsubscribe
     },[])
