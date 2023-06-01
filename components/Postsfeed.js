@@ -30,9 +30,7 @@ export default function Postsfeed() {
       <Tweetinput />
       {tweet.map(tweet => {
         return(
-      <Link href={tweet.id} id={tweet.id}>
       <Tweet id={tweet.id} key={tweet.id} data={tweet.data()}/>
-      </Link>
       );
     })}
 

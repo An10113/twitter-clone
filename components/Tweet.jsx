@@ -17,7 +17,8 @@ export default function Tweet({data, id}) {
         tweet={data?.tweet}/>
         <div className="p-3 ml-16 text-gray-500 flex space-x-12">
           <div
-          onClick={()=> { 
+          onClick={(e)=> {
+             e.stopPropagation()
           dispatch(setCommentTweet({
             id: id,
             tweet:data?.tweet,
