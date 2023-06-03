@@ -19,7 +19,7 @@ export default function Postsfeed() {
     },[])
 
   return (
-    <div className="sm:ml-16 xl:ml-96 max-w-2xl flex-grow 
+    <div className="sm:ml-16 xl:ml-96 max-w-2xl flex-grow
     border-gray-700 border-x
     ">
         <div className="px-3 py-2 text-lg font-bold

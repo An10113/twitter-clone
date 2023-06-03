@@ -1,14 +1,35 @@
 import { openCommentModal, setCommentTweet } from "@/Redux/ModalSlice"
+import { db } from "@/firebase"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
+import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import Moment from "react-moment"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function Tweet({data, id}) {
 
   const dispatch = useDispatch()
+  const router = useRouter()
+  const user = useSelector(state => state.user)
+  const [likes, setLikes] = useState([])
+  async function likeTweet(e){
+    e.stopPropagation()
+    await updateDoc(doc(db, "posts", id),{
+      likes: arrayUnion(user.uid),
+    })
+  }
+
+  useEffect(() => {
+    const unsubcribe = onSnapshot(doc(db, "posts" , id) , (doc) => {
+      setLikes(doc.data().likes)
+    })
+  },[])
 
   return (
-    <div className="border-b border-gray-700">
+    <div
+        onClick={() => router.push("/" + id )} 
+        className="border-b border-gray-700 cursor-pointer">
         <Tweetheader
         photoUrl={data?.photoUrl} 
         username={data?.username} 
@@ -29,7 +50,10 @@ export default function Tweet({data, id}) {
           dispatch(openCommentModal())}}>
           <ChatIcon className="w-5 h-5 cursor-pointer hover:text-green-500 "/>
           </div>
+          <div
+          onClick={likeTweet}>
           <HeartIcon className="w-5 h-5 cursor-pointer hover:text-pink-500"/>
+          </div>
           <ChartBarIcon className="w-5 h-5 cursor-not-allowed "/>
           <UploadIcon className="w-5 h-5 cursor-not-allowed "/>
         </div>

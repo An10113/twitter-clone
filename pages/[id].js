@@ -107,7 +107,7 @@ export default function CommentPage({ tweetData }) {
                 <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
                 {/* <Moment fromNow>{JSON.parse(comment.timestamp)}</Moment> */}
               </div>
-              <span className="text-xl">{comment.tweet}</span>
+              <span>{comment.comment}</span>
             </div>
           </div>
         </div>
