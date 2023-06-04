@@ -1,11 +1,12 @@
-import { openCommentModal, setCommentTweet } from "@/Redux/ModalSlice"
+import { openCommentModal, openLoginModal, setCommentTweet } from "@/Redux/ModalSlice"
 import { db } from "@/firebase"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
-import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
+import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Moment from "react-moment"
 import { useDispatch, useSelector } from "react-redux"
+import { HeartIcon as FillHeartIcon } from "@heroicons/react/solid"
 
 export default function Tweet({data, id}) {
 
@@ -13,16 +14,32 @@ export default function Tweet({data, id}) {
   const router = useRouter()
   const user = useSelector(state => state.user)
   const [likes, setLikes] = useState([])
+  const [comment, setComment] = useState([])
+
+
   async function likeTweet(e){
     e.stopPropagation()
-    await updateDoc(doc(db, "posts", id),{
-      likes: arrayUnion(user.uid),
-    })
+    if(!user.name){
+      dispatch(openLoginModal())
+      return
+    }
+    if(likes.includes(user.uid)){
+      await updateDoc(doc(db, "posts", id),{
+        likes: arrayRemove(user.uid),
+      })
+    }
+    else{
+      await updateDoc(doc(db, "posts", id),{
+        likes: arrayUnion(user.uid),
+      })
+    }
   }
 
   useEffect(() => {
+    if(!id) return
     const unsubcribe = onSnapshot(doc(db, "posts" , id) , (doc) => {
       setLikes(doc.data().likes)
+      setComment(doc.data().comments)
     })
   },[])
 
@@ -38,8 +55,14 @@ export default function Tweet({data, id}) {
         tweet={data?.tweet}/>
         <div className="p-3 ml-16 text-gray-500 flex space-x-12">
           <div
+          className="justify-center flex items-center space-x-1"
           onClick={(e)=> {
-             e.stopPropagation()
+          e.stopPropagation()
+          if(!user.name){
+            dispatch(openLoginModal())
+            return
+          }
+
           dispatch(setCommentTweet({
             id: id,
             tweet:data?.tweet,
@@ -49,10 +72,16 @@ export default function Tweet({data, id}) {
           }));
           dispatch(openCommentModal())}}>
           <ChatIcon className="w-5 h-5 cursor-pointer hover:text-green-500 "/>
+          {comment?.length > 0 && <span className="">{comment.length}</span>}
           </div>
           <div
+          className="justify-center flex items-center space-x-1"
           onClick={likeTweet}>
+            { likes.includes(user.uid) ? 
+          <FillHeartIcon className="w-5 h-5 cursor-pointer text-pink-500"/> :
           <HeartIcon className="w-5 h-5 cursor-pointer hover:text-pink-500"/>
+            }
+            {likes.length > 0 && <span className="">{likes.length}</span>}
           </div>
           <ChartBarIcon className="w-5 h-5 cursor-not-allowed "/>
           <UploadIcon className="w-5 h-5 cursor-not-allowed "/>

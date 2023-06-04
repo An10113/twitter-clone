@@ -16,6 +16,8 @@ export default function CommentModal() {
   const router = useRouter()
 
     async function sendComment(){
+
+
       const docRef = doc(db, "posts", commentTweetDetails.id)
       const commentDetails = {
         username: user.username,
