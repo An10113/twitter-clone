@@ -1,7 +1,7 @@
 import { openCommentModal, openLoginModal, setCommentTweet } from "@/Redux/ModalSlice"
 import { db } from "@/firebase"
-import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
-import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
+import { ChartBarIcon, ChatIcon, HeartIcon, TrashIcon, UploadIcon } from "@heroicons/react/outline"
+import { arrayRemove, arrayUnion, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Moment from "react-moment"
@@ -16,6 +16,10 @@ export default function Tweet({data, id}) {
   const [likes, setLikes] = useState([])
   const [comment, setComment] = useState([])
 
+  async function deleteTweet(e){
+    e.stopPropagation()
+    await deleteDoc(doc(db, "posts", id))
+  }
 
   async function likeTweet(e){
     e.stopPropagation()
@@ -38,8 +42,8 @@ export default function Tweet({data, id}) {
   useEffect(() => {
     if(!id) return
     const unsubcribe = onSnapshot(doc(db, "posts" , id) , (doc) => {
-      setLikes(doc.data().likes)
-      setComment(doc.data().comments)
+      setLikes(doc.data()?.likes)
+      setComment(doc.data()?.comments)
     })
   },[])
 
@@ -83,6 +87,12 @@ export default function Tweet({data, id}) {
             }
             {likes.length > 0 && <span className="">{likes.length}</span>}
           </div>
+          {user.uid === data?.uid && 
+          <div 
+          onClick={deleteTweet}
+          className="w-5 cursor-pointer hover:text-red-600">
+            <TrashIcon />
+          </div> }
           <ChartBarIcon className="w-5 h-5 cursor-not-allowed "/>
           <UploadIcon className="w-5 h-5 cursor-not-allowed "/>
         </div>

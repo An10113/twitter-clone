@@ -57,7 +57,7 @@ export default function Tweetinput() {
               </div>
                 <button
                 onClick={sendTweet}
-                disabled={!text} 
+                disabled={!text || !user.username} 
                 className=" disabled:opacity-50
                 bg-[#1d9bf0] rounded-full 
                 px-4 py-1.5 hover:bg-opacity-80 ">Tweet</button>

@@ -76,16 +76,18 @@ export default function CommentPage({ tweetData }) {
             </div>
           </div>
         </div>
-        <div className="items-center flex justify-between p-2">
-            <div className="flex justify-center items-center p-1 space-x-2">
+        {user.photoUrl && 
+        <>
+         <div className="items-center flex p-2 border-b border-gray-700">
+            <div className="flex justify-center items-center">
                 <img 
-                className="w-12 h-12 rounded-full object-cover"
+                className="w-12 h-12 rounded-full object-cover "
                 src={user.photoUrl}/>
-                <h1 className="text-2xl text-gray-500">Tweet your reply</h1>
-                {/* <textarea 
-                onChange={e => setText(e.target.value)}
-                className="w-full"/> */}
             </div>
+                <input 
+                placeholder="Tweet your reply"
+                onChange={e => setText(e.target.value)}
+                className="bg-transparent outline-none p-3 text-base w-full"/>
             <button
             disabled={!text}
             className=" disabled:opacity-50
@@ -93,7 +95,9 @@ export default function CommentPage({ tweetData }) {
             px-4 py-1.5 hover:bg-opacity-80 ">
               Tweet
             </button>
-        </div>
+        </div> 
+        </>
+        }
         {tweetData.comments?.map(comment => (
           <div className="border-b border-gray-700">
           <div className="flex space-x-3 p-3">
