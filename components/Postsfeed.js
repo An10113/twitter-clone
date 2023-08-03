@@ -23,7 +23,7 @@ export default function Postsfeed() {
     border-gray-700 border-x
     ">
         <div className="px-3 py-2 text-lg font-bold
-        sm:text-xl border-gray-700 sticky top-0 border-b
+        sm:text-xl border-gray-700 top-0 border-b
         ">
             Home
         </div>
